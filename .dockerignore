@@ -1,0 +1,10 @@
+# Folders
+.git
+.vscode
+docker-custom
+.dockerignore
+docker-compose.yml
+.bash_history
+!docker-custom/app.entrypoint.sh
+!docker-custom/config/**
+scripts

@@ -1,0 +1,24 @@
+#isbn_search {
+    width: 90%;
+    margin-bottom: unset;
+}
+
+.container #button_submit_order {
+    margin: 30px;
+}
+#id_paypal,
+#id_bank {
+    width: 80%;
+}
+#id_bank-error,
+#id_paypal-error {
+    margin: 10px;
+}
+#upload-products {
+    float: right
+}
+#myBar {
+    width: 1%;
+    height: 30px;
+    background-color: green;
+}

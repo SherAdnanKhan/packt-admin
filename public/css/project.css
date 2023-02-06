@@ -1,0 +1,17 @@
+
+.error
+{
+    display: flex;
+    color: red !important;
+    margin-top: -10px;
+}
+
+.c1
+{
+    border: 2px red ridge;
+}
+
+.c2
+{
+    border: 2px #7f7f7f ridge;
+}

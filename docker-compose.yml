@@ -1,0 +1,75 @@
+version: "3"
+services:
+  #PHP Service
+  app:
+    build:
+      context: .
+      dockerfile: ./docker-custom/Dockerfile
+    image: packt-admin.app
+    container_name: packt-admin.app
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: "${APP_NAME}"
+      SERVICE_TAGS: "${APP_ENV}"
+    env_file: .env
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www # Only needed for development purposes
+    networks:
+      - packt-admin-network
+    depends_on:
+      - db
+  #Nginx Service
+  webserver:
+    image: nginx:alpine
+    container_name: packt-admin.webserver
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "81:80"
+      - "443:443"
+    volumes:
+      - ./:/var/www
+      - ./docker-custom/config/nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - packt-admin-network
+    depends_on:
+      - app
+
+  #Postgres Service
+  db:
+    image: postgres:11
+    container_name: packt-admin.db
+    restart: unless-stopped
+    ports:
+      - 5432:5432/tcp
+    environment:
+      POSTGRES_USER: laravel
+      POSTGRES_PASSWORD: laravel-password
+      POSTGRES_DB: packt-admin
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - packt-admin-network
+
+  # PgAdmin Setup
+  pgadmin:
+    links:
+      - db:packt-admin-network
+    image: fenglc/pgadmin4
+    ports:
+      - "5050:5050"
+    networks:
+      - packt-admin-network
+    restart: unless-stopped
+
+#Docker Networks
+networks:
+  packt-admin-network:
+    driver: bridge
+
+#Volumes
+volumes:
+  pgdata:
+    driver: local
